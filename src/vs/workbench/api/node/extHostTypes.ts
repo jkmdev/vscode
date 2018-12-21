@@ -162,9 +162,9 @@ export class Position {
 		}
 	}
 
-	translate(change: { lineDelta?: number; characterDelta?: number; }): Position;
-	translate(lineDelta?: number, characterDelta?: number): Position;
-	translate(lineDeltaOrChange: number | undefined | { lineDelta?: number; characterDelta?: number; }, characterDelta: number = 0): Position {
+	translate(change: { lineDelta?: number | null; characterDelta?: number | null; }): Position;
+	translate(lineDelta?: number | null, characterDelta?: number | null): Position;
+	translate(lineDeltaOrChange: number | undefined | null | { lineDelta?: number | null; characterDelta?: number | null; }, characterDelta: number = 0): Position {
 
 		if (lineDeltaOrChange === null || characterDelta === null) {
 			throw illegalArgument();
@@ -186,9 +186,9 @@ export class Position {
 		return new Position(this.line + lineDelta, this.character + characterDelta);
 	}
 
-	with(change: { line?: number; character?: number; }): Position;
-	with(line?: number, character?: number): Position;
-	with(lineOrChange: number | undefined | { line?: number; character?: number; }, character: number = this.character): Position {
+	with(change: { line?: number | null; character?: number; }): Position;
+	with(line?: number | null, character?: number): Position;
+	with(lineOrChange: number | undefined | null | { line?: number | null; character?: number; }, character: number = this.character): Position {
 
 		if (lineOrChange === null || character === null) {
 			throw illegalArgument();
@@ -241,9 +241,9 @@ export class Range {
 		return this._end;
 	}
 
-	constructor(start: Position, end: Position);
-	constructor(startLine: number, startColumn: number, endLine: number, endColumn: number);
-	constructor(startLineOrStart: number | Position, startColumnOrEnd: number | Position, endLine?: number, endColumn?: number) {
+	constructor(start: Position | undefined | null, end: Position | undefined | null);
+	constructor(startLine: number | undefined | null, startColumn: number | undefined | null, endLine: number | undefined | null, endColumn: number | undefined | null);
+	constructor(startLineOrStart: number | Position | undefined | null, startColumnOrEnd: number | Position | undefined | null, endLine?: number | undefined | null, endColumn?: number | undefined | null) {
 		let start: Position | undefined;
 		let end: Position | undefined;
 
@@ -489,9 +489,9 @@ export class TextEdit {
 		this._newEol = value;
 	}
 
-	constructor(range: Range, newText: string) {
+	constructor(range: Range, newText: string | null | undefined) {
 		this.range = range;
-		this.newText = newText;
+		this.newText = this.newText ? newText : '';
 	}
 
 	toJSON(): any {
@@ -561,7 +561,7 @@ export class WorkspaceEdit implements vscode.WorkspaceEdit {
 		return false;
 	}
 
-	set(uri: URI, edits: TextEdit[]): void {
+	set(uri: URI, edits: TextEdit[] | undefined): void {
 		if (!edits) {
 			// remove all text edits for `uri`
 			for (let i = 0; i < this._edits.length; i++) {
@@ -1325,8 +1325,8 @@ export class DocumentLink {
 
 	target: URI;
 
-	constructor(range: Range, target: URI) {
-		if (target && !(target instanceof URI)) {
+	constructor(range: Range | null, target: URI | null) {
+		if (!(target instanceof URI)) {
 			throw illegalArgument('target');
 		}
 		if (!Range.isRange(range) || range.isEmpty) {

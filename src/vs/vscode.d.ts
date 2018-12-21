@@ -2817,7 +2817,7 @@ declare module 'vscode' {
 		 * @param uri A resource identifier.
 		 * @param edits An array of text edits.
 		 */
-		set(uri: Uri, edits: TextEdit[]): void;
+		set(uri: Uri, edits: TextEdit[] | undefined): void;
 
 		/**
 		 * Get the text edits for a resource.

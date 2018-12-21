@@ -395,17 +395,17 @@ suite('ExtHostTypes', function () {
 		}
 
 		const [first, second, third, fourth] = all;
-		assert.equal(first[0].toString(), 'foo:a');
+		assert.equal(first[0]!.toString(), 'foo:a');
 		assert.ok(!isFileChange(first));
 		assert.ok(isTextChange(first) && first[1].length === 1);
 
-		assert.equal(second[0].toString(), 'foo:a');
+		assert.equal(second[0]!.toString(), 'foo:a');
 		assert.ok(isFileChange(second));
 
-		assert.equal(third[0].toString(), 'foo:a');
+		assert.equal(third[0]!.toString(), 'foo:a');
 		assert.ok(isTextChange(third) && third[1].length === 1);
 
-		assert.equal(fourth[0].toString(), 'foo:b');
+		assert.equal(fourth[0]!.toString(), 'foo:b');
 		assert.ok(!isFileChange(fourth));
 		assert.ok(isTextChange(fourth) && fourth[1].length === 1);
 	});
